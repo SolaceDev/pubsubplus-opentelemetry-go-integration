@@ -1,0 +1,12 @@
+# OauthProfileResponse
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**Collections** | [***OauthProfileCollections**](OauthProfileCollections.md) |  | [optional] [default to null]
+**Data** | [***OauthProfile**](OauthProfile.md) |  | [optional] [default to null]
+**Links** | [***OauthProfileLinks**](OauthProfileLinks.md) |  | [optional] [default to null]
+**Meta** | [***SempMeta**](SempMeta.md) |  | [default to null]
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+

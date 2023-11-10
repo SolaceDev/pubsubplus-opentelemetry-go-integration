@@ -1,0 +1,48 @@
+# MsgVpnClientTransactedSession
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**ClientName** | **string** | The name of the Client. | [optional] [default to null]
+**CommitCount** | **int64** | The number of transactions committed within the Transacted Session. | [optional] [default to null]
+**CommitFailureCount** | **int64** | The number of transaction commit operations that failed. | [optional] [default to null]
+**CommitSuccessCount** | **int64** | The number of transaction commit operations that succeeded. | [optional] [default to null]
+**ConsumedMsgCount** | **int64** | The number of messages consumed within the Transacted Session. | [optional] [default to null]
+**EndFailFailureCount** | **int64** | The number of transaction end fail operations that failed. | [optional] [default to null]
+**EndFailSuccessCount** | **int64** | The number of transaction end fail operations that succeeded. | [optional] [default to null]
+**EndFailureCount** | **int64** | The number of transaction end operations that failed. | [optional] [default to null]
+**EndRollbackFailureCount** | **int64** | The number of transaction end rollback operations that failed. | [optional] [default to null]
+**EndRollbackSuccessCount** | **int64** | The number of transaction end rollback operations that succeeded. | [optional] [default to null]
+**EndSuccessCount** | **int64** | The number of transaction end operations that succeeded. | [optional] [default to null]
+**FailureCount** | **int64** | The number of transactions that failed within the Transacted Session. | [optional] [default to null]
+**ForgetFailureCount** | **int64** | The number of transaction forget operations that failed. | [optional] [default to null]
+**ForgetSuccessCount** | **int64** | The number of transaction forget operations that succeeded. | [optional] [default to null]
+**MsgVpnName** | **string** | The name of the Message VPN. | [optional] [default to null]
+**OnePhaseCommitFailureCount** | **int64** | The number of transaction one-phase commit operations that failed. | [optional] [default to null]
+**OnePhaseCommitSuccessCount** | **int64** | The number of transaction one-phase commit operations that succeeded. | [optional] [default to null]
+**PendingConsumedMsgCount** | **int32** | The number of messages to be consumed when the transaction is committed. | [optional] [default to null]
+**PendingPublishedMsgCount** | **int32** | The number of messages to be published when the transaction is committed. | [optional] [default to null]
+**PrepareFailureCount** | **int64** | The number of transaction prepare operations that failed. | [optional] [default to null]
+**PrepareSuccessCount** | **int64** | The number of transaction prepare operations that succeeded. | [optional] [default to null]
+**PreviousTransactionState** | **string** | The state of the previous transaction. The allowed values and their meaning are:  &lt;pre&gt; \&quot;none\&quot; - The previous transaction had no state. \&quot;committed\&quot; - The previous transaction was committed. \&quot;rolled-back\&quot; - The previous transaction was rolled back. \&quot;failed\&quot; - The previous transaction failed. &lt;/pre&gt;  | [optional] [default to null]
+**PublishedMsgCount** | **int64** | The number of messages published within the Transacted Session. | [optional] [default to null]
+**ResumeFailureCount** | **int64** | The number of transaction resume operations that failed. | [optional] [default to null]
+**ResumeSuccessCount** | **int64** | The number of transaction resume operations that succeeded. | [optional] [default to null]
+**RetrievedMsgCount** | **int64** | The number of messages retrieved within the Transacted Session. | [optional] [default to null]
+**RollbackCount** | **int64** | The number of transactions rolled back within the Transacted Session. | [optional] [default to null]
+**RollbackFailureCount** | **int64** | The number of transaction rollback operations that failed. | [optional] [default to null]
+**RollbackSuccessCount** | **int64** | The number of transaction rollback operations that succeeded. | [optional] [default to null]
+**SessionName** | **string** | The name of the Transacted Session. | [optional] [default to null]
+**SpooledMsgCount** | **int64** | The number of messages spooled within the Transacted Session. | [optional] [default to null]
+**StartFailureCount** | **int64** | The number of transaction start operations that failed. | [optional] [default to null]
+**StartSuccessCount** | **int64** | The number of transaction start operations that succeeded. | [optional] [default to null]
+**SuccessCount** | **int64** | The number of transactions that succeeded within the Transacted Session. | [optional] [default to null]
+**SuspendFailureCount** | **int64** | The number of transaction suspend operations that failed. | [optional] [default to null]
+**SuspendSuccessCount** | **int64** | The number of transaction suspend operations that succeeded. | [optional] [default to null]
+**TransactionId** | **int32** | The identifier (ID) of the transaction in the Transacted Session. | [optional] [default to null]
+**TransactionState** | **string** | The state of the current transaction. The allowed values and their meaning are:  &lt;pre&gt; \&quot;in-progress\&quot; - The current transaction is in progress. \&quot;committing\&quot; - The current transaction is committing. \&quot;rolling-back\&quot; - The current transaction is rolling back. \&quot;failing\&quot; - The current transaction is failing. &lt;/pre&gt;  | [optional] [default to null]
+**TwoPhaseCommitFailureCount** | **int64** | The number of transaction two-phase commit operations that failed. | [optional] [default to null]
+**TwoPhaseCommitSuccessCount** | **int64** | The number of transaction two-phase commit operations that succeeded. | [optional] [default to null]
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
