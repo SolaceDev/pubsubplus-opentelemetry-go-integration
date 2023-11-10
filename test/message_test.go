@@ -33,49 +33,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-type fromConfigProviderTestCase struct {
-	key    config.MessageProperty
-	value  interface{}
-	getter func(message.Message) (interface{}, bool)
-}
-
-var fromConfigProviderTestCases = []fromConfigProviderTestCase{
-	{config.MessagePropertyApplicationMessageType, "my message type", func(m message.Message) (interface{}, bool) { return m.GetApplicationMessageType() }},
-	{config.MessagePropertyApplicationMessageID, "my message id", func(m message.Message) (interface{}, bool) { return m.GetApplicationMessageID() }},
-	{config.MessagePropertyPriority, 100, func(m message.Message) (interface{}, bool) { return m.GetPriority() }},
-	{config.MessagePropertyHTTPContentType, "my content type", func(m message.Message) (interface{}, bool) { return m.GetHTTPContentType() }},
-	{config.MessagePropertyHTTPContentEncoding, "my content encoding", func(m message.Message) (interface{}, bool) { return m.GetHTTPContentEncoding() }},
-	{config.MessagePropertyCorrelationID, "my correlation id", func(m message.Message) (interface{}, bool) { return m.GetCorrelationID() }},
-	{config.MessagePropertyPersistentExpiration, time.Unix(99999999, 0), func(m message.Message) (interface{}, bool) { return m.GetExpiration(), true }},
-	{config.MessagePropertySequenceNumber, uint(1038492345), func(m message.Message) (interface{}, bool) { return m.GetSequenceNumber() }},
-	{config.MessagePropertyClassOfService, 1, func(m message.Message) (interface{}, bool) { return m.GetClassOfService(), true }},
-	// TODO getters?
-	// This really just makes sure the code doesn't core or whatever when setting these fields..
-	{config.MessagePropertyElidingEligible, true, func(m message.Message) (interface{}, bool) { return true, true }},
-	{config.MessagePropertyPersistentTimeToLive, int64(1234), func(m message.Message) (interface{}, bool) { return int64(1234), true }},
-	{config.MessagePropertyPersistentDMQEligible, true, func(m message.Message) (interface{}, bool) { return true, true }},
-	{config.MessagePropertyPersistentAckImmediately, true, func(m message.Message) (interface{}, bool) { return true, true }},
-}
-
-type dummyStruct struct{}
-
-var fromConfigProviderInvalidTestCases = map[config.MessageProperty]interface{}{
-	config.MessagePropertyApplicationMessageType:   dummyStruct{},
-	config.MessagePropertyApplicationMessageID:     dummyStruct{},
-	config.MessagePropertyPriority:                 dummyStruct{},
-	config.MessagePropertyHTTPContentType:          dummyStruct{},
-	config.MessagePropertyHTTPContentEncoding:      dummyStruct{},
-	config.MessagePropertyCorrelationID:            dummyStruct{},
-	config.MessagePropertyPersistentExpiration:     dummyStruct{},
-	config.MessagePropertyPersistentTimeToLive:     dummyStruct{},
-	config.MessagePropertyPersistentDMQEligible:    dummyStruct{},
-	config.MessagePropertyPersistentAckImmediately: dummyStruct{},
-	config.MessagePropertySequenceNumber:           dummyStruct{},
-	config.MessagePropertyElidingEligible:          dummyStruct{},
-	config.MessagePropertyClassOfService:           dummyStruct{},
-	config.MessagePropertySenderID:                 dummyStruct{},
-}
-
 // InboundMessageWithTracingSupport represents a message received by a consumer.
 type InboundMessageWithTracingSupport interface {
 	// Extend the InboundMessage interface.
@@ -148,7 +105,8 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 
 			var carrier = trace.NewOutboundMessageCarrier(msg)
 			traceParent1 := "00-79f90916c9a3dad1eb4b328e00469e45-3b364712c4e1f17f-00" // creation context
-			Expect(carrier.Set(propagation.TracingPropertyName.TraceParent, traceParent1)).ToNot(Panic())
+			carrier.Set(propagation.TracingPropertyName.TraceParent, traceParent1)
+			Expect(carrier.Get(propagation.TracingPropertyName.TraceParent)).ToNot(BeEmpty())
 		})
 
 		It("does not panic when calling Set(TraceState) on carrier message", func() {
@@ -157,7 +115,8 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 
 			var carrier = trace.NewOutboundMessageCarrier(msg)
 			traceState1 := "trace1=value1;trace2=value2;trace322=ewrHB554CGF" // creation trace state
-			Expect(carrier.Set(propagation.TracingPropertyName.TraceState, traceState1)).ToNot(Panic())
+			carrier.Set(propagation.TracingPropertyName.TraceState, traceState1)
+			Expect(carrier.Get(propagation.TracingPropertyName.TraceState)).ToNot(BeEmpty())
 		})
 
 		It("does not panic when calling Set(Baggage) on carrier message", func() {
@@ -167,7 +126,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			var carrier = trace.NewOutboundMessageCarrier(msg)
 			baggageStr := "newbaggage=Oseme,example=yammer,foo=bar"
 			carrier.Set(propagation.TracingPropertyName.Baggage, baggageStr)
-			Expect().ToNot(Panic())
+			Expect(carrier.Get(propagation.TracingPropertyName.Baggage)).ToNot(BeEmpty())
 		})
 
 		It("does not panic when calling Get(TraceParent) on carrier message", func() {
@@ -175,7 +134,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			var carrier = trace.NewOutboundMessageCarrier(msg)
-			Expect(carrier.Get(propagation.TracingPropertyName.TraceParent)).ToNot(Panic())
+			Expect(func() { carrier.Get(propagation.TracingPropertyName.TraceParent) }).ToNot(Panic())
 		})
 
 		It("does not panic when calling Get(TraceState) on carrier message", func() {
@@ -183,7 +142,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			var carrier = trace.NewOutboundMessageCarrier(msg)
-			Expect(carrier.Get(propagation.TracingPropertyName.TraceState)).ToNot(Panic())
+			Expect(func() { carrier.Get(propagation.TracingPropertyName.TraceState) }).ToNot(Panic())
 		})
 
 		It("does not panic when calling Get(Baggage) on carrier message", func() {
@@ -191,7 +150,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			var carrier = trace.NewOutboundMessageCarrier(msg)
-			Expect(carrier.Get(propagation.TracingPropertyName.Baggage)).ToNot(Panic())
+			Expect(func() { carrier.Get(propagation.TracingPropertyName.Baggage) }).ToNot(Panic())
 		})
 
 	})

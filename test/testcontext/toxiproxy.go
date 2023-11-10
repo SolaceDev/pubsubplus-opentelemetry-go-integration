@@ -68,7 +68,7 @@ func (toxiProxy *toxiProxyImpl) setup() error {
 	toxiProxy.proxies[smfProxyName], err = toxiProxy.client.CreateProxy(
 		smfProxyName,
 		fmt.Sprintf(":%d", toxiProxy.config.PlaintextPort),
-		fmt.Sprintf("%s:%d", toxiProxy.config.Upstream, 55554),
+		fmt.Sprintf("%s:%d", toxiProxy.config.Upstream, 55555),
 	)
 	if err != nil {
 		return err
