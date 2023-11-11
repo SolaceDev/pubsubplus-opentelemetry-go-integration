@@ -14,17 +14,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package propagation // import "solace.dev/go/trace/propagation"
+package internal
 
-// Version is the current release version of the Solace PubSub+ OpenTelemetry Integration API.
-func Version() string {
-	return "1.0.0"
-	// This string should updated by a pre-release script during release
+type TracingPropertyNames struct {
+	TraceParent string
+	TraceState  string
+	Baggage     string
+
+	propertyNames []string
 }
 
-// SemVersion is the semantic version to be supplied to tracer/meter creation.
-//
-// Deprecated: Use [Version] instead.
-func SemVersion() string {
-	return Version()
+func NewTracingPropertyNames() *TracingPropertyNames {
+	return &TracingPropertyNames{
+		TraceParent: "traceparent",
+		TraceState:  "tracestate",
+		Baggage:     "baggage",
+
+		propertyNames: []string{"traceparent", "tracestate", "baggage"},
+	}
+}
+
+func (tracingProperty *TracingPropertyNames) List() []string {
+	return tracingProperty.propertyNames
 }

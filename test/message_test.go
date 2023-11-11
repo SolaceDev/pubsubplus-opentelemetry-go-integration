@@ -25,7 +25,6 @@ import (
 	"solace.dev/go/messaging/pkg/solace/config"
 	"solace.dev/go/messaging/pkg/solace/message"
 	"solace.dev/go/messaging/pkg/solace/resource"
-	"solace.dev/go/trace"
 	"solace.dev/go/trace/propagation"
 	"solace.dev/go/trace/test/helpers"
 
@@ -103,7 +102,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			msg, err := messageBuilder.Build()
 			Expect(err).ToNot(HaveOccurred())
 
-			var carrier = trace.NewOutboundMessageCarrier(msg)
+			var carrier = propagation.NewOutboundMessageCarrier(msg)
 			traceParent1 := "00-79f90916c9a3dad1eb4b328e00469e45-3b364712c4e1f17f-00" // creation context
 			carrier.Set(propagation.TracingPropertyName.TraceParent, traceParent1)
 			Expect(carrier.Get(propagation.TracingPropertyName.TraceParent)).ToNot(BeEmpty())
@@ -113,7 +112,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			msg, err := messageBuilder.Build()
 			Expect(err).ToNot(HaveOccurred())
 
-			var carrier = trace.NewOutboundMessageCarrier(msg)
+			var carrier = propagation.NewOutboundMessageCarrier(msg)
 			traceState1 := "trace1=value1;trace2=value2;trace322=ewrHB554CGF" // creation trace state
 			carrier.Set(propagation.TracingPropertyName.TraceState, traceState1)
 			Expect(carrier.Get(propagation.TracingPropertyName.TraceState)).ToNot(BeEmpty())
@@ -123,7 +122,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			msg, err := messageBuilder.Build()
 			Expect(err).ToNot(HaveOccurred())
 
-			var carrier = trace.NewOutboundMessageCarrier(msg)
+			var carrier = propagation.NewOutboundMessageCarrier(msg)
 			baggageStr := "newbaggage=Oseme,example=yammer,foo=bar"
 			carrier.Set(propagation.TracingPropertyName.Baggage, baggageStr)
 			Expect(carrier.Get(propagation.TracingPropertyName.Baggage)).ToNot(BeEmpty())
@@ -133,7 +132,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			msg, err := messageBuilder.Build()
 			Expect(err).ToNot(HaveOccurred())
 
-			var carrier = trace.NewOutboundMessageCarrier(msg)
+			var carrier = propagation.NewOutboundMessageCarrier(msg)
 			Expect(func() { carrier.Get(propagation.TracingPropertyName.TraceParent) }).ToNot(Panic())
 		})
 
@@ -141,7 +140,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			msg, err := messageBuilder.Build()
 			Expect(err).ToNot(HaveOccurred())
 
-			var carrier = trace.NewOutboundMessageCarrier(msg)
+			var carrier = propagation.NewOutboundMessageCarrier(msg)
 			Expect(func() { carrier.Get(propagation.TracingPropertyName.TraceState) }).ToNot(Panic())
 		})
 
@@ -149,7 +148,7 @@ var _ = Describe("Local MessageBuilder Tests", func() {
 			msg, err := messageBuilder.Build()
 			Expect(err).ToNot(HaveOccurred())
 
-			var carrier = trace.NewOutboundMessageCarrier(msg)
+			var carrier = propagation.NewOutboundMessageCarrier(msg)
 			Expect(func() { carrier.Get(propagation.TracingPropertyName.Baggage) }).ToNot(Panic())
 		})
 

@@ -16,26 +16,7 @@
 
 package propagation
 
-type TracingPropertyNames struct {
-	TraceParent string
-	TraceState  string
-	Baggage     string
+import "solace.dev/go/trace/propagation/internal"
 
-	propertyNames []string
-}
-
-func NewTracingPropertyNames() *TracingPropertyNames {
-	return &TracingPropertyNames{
-		TraceParent: "traceparent",
-		TraceState:  "tracestate",
-		Baggage:     "baggage",
-
-		propertyNames: []string{"traceparent", "tracestate", "baggage"},
-	}
-}
-
-func (tracingProperty *TracingPropertyNames) List() []string {
-	return tracingProperty.propertyNames
-}
-
-var TracingPropertyName = NewTracingPropertyNames()
+// the tracing property names
+var TracingPropertyName = internal.NewTracingPropertyNames()

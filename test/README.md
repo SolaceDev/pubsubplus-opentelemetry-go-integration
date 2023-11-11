@@ -16,7 +16,7 @@ First, docker and docker-compose must be installed and accessible to the current
 To run an individual test, first install the ginkgo command line tool with `go install github.com/onsi/ginkgo/v2/ginkgo@latest`, then run the tests with `ginkgo --focus="mytestregex"` from the test directory. This regex will match describe/context/it strings. For more information, see the [ginkgo documentation](https://onsi.github.io/ginkgo/#the-spec-runner).
 
 ## Coverage
-Golang provides built in coverage reporting for test suites. A coverage report can be generated with `go test -coverprofile coverage.out -coverpkg solace.dev/go/trace/internal/...,solace.dev/go/trace/propagation/...`. This profile can be viewed as HTML with `go tool cover -html coverage.out`.
+Golang provides built in coverage reporting for test suites. A coverage report can be generated with `go test -coverprofile coverage.out -coverpkg solace.dev/go/trace/propagation/internal/...,solace.dev/go/trace/propagation/...`. This profile can be viewed as HTML with `go tool cover -html coverage.out`.
 
 ## Debug Logging
 Debug logs can be enabled on the integration tests by adding the build tag `-tags enable_debug_logging` to the `go test` or `ginkgo` command. By default, the log level is set to Info.

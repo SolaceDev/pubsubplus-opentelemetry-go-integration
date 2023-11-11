@@ -20,8 +20,7 @@ package impl
 
 import (
 	"solace.dev/go/messaging/pkg/solace/message"
-	"solace.dev/go/trace/internal"
-	"solace.dev/go/trace/propagation"
+	"solace.dev/go/trace/propagation/internal"
 )
 
 // InboundMessageWithTracingSupport represents a message received by a consumer.
@@ -89,11 +88,12 @@ func (carrier *InboundMessageCarrier) Get(key string) string {
 	message := carrier.messagePointer
 	messageWithDT := message.(InboundMessageWithTracingSupport)
 
-	// TracingPropertyName := NewTracingPropertyNames()
+	// the tracing property names
+	TracingPropertyName := internal.NewTracingPropertyNames()
 
 	switch key {
 
-	case propagation.TracingPropertyName.TraceParent:
+	case TracingPropertyName.TraceParent:
 		internal.Log("Returning the TraceParent for this message")
 		// return the trasport context as the Trace Parent
 		if traceID, spanID, sampled, _, ok := messageWithDT.GetTransportTraceContext(); ok {
@@ -107,10 +107,11 @@ func (carrier *InboundMessageCarrier) Get(key string) string {
 			internal.Log("[GetTraceParentAsString]: Creation context was found, retreiving from Creation context")
 			return internal.GetTraceParentFromTraceContextProperties(traceID, spanID, sampled)
 		}
+
 		internal.Log("[GetTraceParentAsString]: No context information found on this Solace message")
 		return "" // no value found
 
-	case propagation.TracingPropertyName.TraceState:
+	case TracingPropertyName.TraceState:
 		internal.Log("Returning the TraceState for this message")
 		// return the TraceState from the transport context
 		_, _, _, transportTraceState, _ := messageWithDT.GetTransportTraceContext()
@@ -140,7 +141,7 @@ func (carrier *InboundMessageCarrier) Get(key string) string {
 		}
 		return traceState // the TraceState value from the context(s)
 
-	case propagation.TracingPropertyName.Baggage:
+	case TracingPropertyName.Baggage:
 		if baggage, ok := messageWithDT.GetBaggage(); ok {
 			internal.Log("Baggage string found for Solace message: " + baggage)
 			return baggage
@@ -168,9 +169,12 @@ func (carrier *InboundMessageCarrier) Set(key, val string) {
 			message := carrier.messagePointer
 			messageWithDT := message.(InboundMessageWithTracingSupport)
 
+			// the tracing property names
+			TracingPropertyName := internal.NewTracingPropertyNames()
+
 			switch key {
 
-			case propagation.TracingPropertyName.TraceParent:
+			case TracingPropertyName.TraceParent:
 				internal.Log("Injecting trace parent into the Solace message")
 				// return the trasport context as the Trace Parent
 				if traceID, spanID, sampled, ok := internal.GetTraceContextPropertiesFromTraceParent(val); ok {
@@ -186,7 +190,7 @@ func (carrier *InboundMessageCarrier) Set(key, val string) {
 					}
 				}
 
-			case propagation.TracingPropertyName.TraceState:
+			case TracingPropertyName.TraceState:
 				internal.Log("Injecting trace state into the Solace message")
 				newTraceState := string(val) // new string since we are passing a reference into function
 				// inject traceState into creation context since it is not null
@@ -203,7 +207,7 @@ func (carrier *InboundMessageCarrier) Set(key, val string) {
 					}
 				}
 
-			case propagation.TracingPropertyName.Baggage:
+			case TracingPropertyName.Baggage:
 				internal.Log("'Injecting baggage information into the Solace message")
 				// check that baggage is valid before injection
 				if internal.IsValidBaggageValue(val) {
@@ -233,5 +237,7 @@ func (carrier *InboundMessageCarrier) Set(key, val string) {
 // Keys lists the keys stored in this carrier.
 func (carrier *InboundMessageCarrier) Keys() []string {
 	// it can return 'traceparent', 'tracestate', 'baggage' when they are supported by the underlying message pointer
-	return propagation.TracingPropertyName.List()
+	// the tracing property names
+	TracingPropertyName := internal.NewTracingPropertyNames()
+	return TracingPropertyName.List()
 }

@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package trace contains the functions used to handle injection
+// Package propagation contains the functions used to handle injection
 // and extraction of tracing information for carrier objects (Solace message)
 // for a Solace PubSub+ Event Broker.
-package trace
+package propagation
