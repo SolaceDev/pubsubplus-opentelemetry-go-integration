@@ -47,7 +47,7 @@ func GetTraceParentFromTraceContextProperties(traceID [16]byte, spanID [8]byte, 
 
 	traceFlagsHex := "00"
 	if sampled {
-		traceFlagsHex = "11"
+		traceFlagsHex = "01" // since the flag should be < 2 (binary: 10)
 	}
 
 	encodedTraceParent := fmt.Sprintf(
