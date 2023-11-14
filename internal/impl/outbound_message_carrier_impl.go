@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package propagation contains the main type definitions
+// Package impl contains the main type definitions
 // for the Getter and Setter for handling OTEL tracing.
 package impl
 

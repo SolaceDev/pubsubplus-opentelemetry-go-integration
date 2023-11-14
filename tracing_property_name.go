@@ -18,5 +18,5 @@ package propagation // import "solace.dev/go/trace/propagation"
 
 import "solace.dev/go/trace/propagation/internal"
 
-// the tracing property names
+// TracingPropertyName - the tracing property names
 var TracingPropertyName = internal.NewTracingPropertyNames()
