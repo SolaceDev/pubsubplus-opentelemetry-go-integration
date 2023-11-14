@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package propagation
+package propagation // import "solace.dev/go/trace/propagation"
 
 import "solace.dev/go/trace/propagation/internal"
 
