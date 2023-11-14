@@ -1,0 +1,7 @@
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    target-branch: "CRE-1293-otel-go-ci"
+    schedule:
+      interval: daily
