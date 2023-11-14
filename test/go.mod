@@ -1,4 +1,4 @@
-module solace.dev/go/trace/test
+module solace.dev/go/trace/propagation/test
 
 go 1.17
 
@@ -21,9 +21,9 @@ require (
 	google.golang.org/genproto v0.0.0-20220304144024-325a89244dc8 // indirect
 	solace.dev/go/messaging v1.4.0
 	solace.dev/go/trace/propagation v1.0.0
-	solace.dev/go/trace/test/sempclient/action v0.0.0
-	solace.dev/go/trace/test/sempclient/config v0.0.0
-	solace.dev/go/trace/test/sempclient/monitor v0.0.0
+	solace.dev/go/trace/propagation/test/sempclient/action v0.0.0
+	solace.dev/go/trace/propagation/test/sempclient/config v0.0.0
+	solace.dev/go/trace/propagation/test/sempclient/monitor v0.0.0
 )
 
 require (
@@ -56,8 +56,8 @@ replace solace.dev/go/messaging v1.4.0 => ../../pubsubplus-go-client
 
 replace solace.dev/go/trace/propagation v1.0.0 => ../../pubsubplus-opentelemetry-go-integration
 
-replace solace.dev/go/trace/test/sempclient/action v0.0.0 => ./sempclient/action
+replace solace.dev/go/trace/propagation/test/sempclient/action v0.0.0 => ./sempclient/action
 
-replace solace.dev/go/trace/test/sempclient/config v0.0.0 => ./sempclient/config
+replace solace.dev/go/trace/propagation/test/sempclient/config v0.0.0 => ./sempclient/config
 
-replace solace.dev/go/trace/test/sempclient/monitor v0.0.0 => ./sempclient/monitor
+replace solace.dev/go/trace/propagation/test/sempclient/monitor v0.0.0 => ./sempclient/monitor

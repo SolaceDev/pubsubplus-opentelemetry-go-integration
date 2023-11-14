@@ -17,9 +17,9 @@
 package helpers
 
 import (
-	sempconfig "solace.dev/go/trace/test/sempclient/config"
-	"solace.dev/go/trace/test/sempclient/monitor"
-	"solace.dev/go/trace/test/testcontext"
+	sempconfig "solace.dev/go/trace/propagation/test/sempclient/config"
+	"solace.dev/go/trace/propagation/test/sempclient/monitor"
+	"solace.dev/go/trace/propagation/test/testcontext"
 
 	//lint:ignore ST1001 dot import is fine for tests
 	. "github.com/onsi/gomega"

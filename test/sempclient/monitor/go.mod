@@ -1,4 +1,4 @@
-module solace.dev/go/trace/test/sempclient/monitor
+module solace.dev/go/trace/propagation/test/sempclient/monitor
 
 go 1.13
 

@@ -26,7 +26,7 @@ import (
 	"solace.dev/go/messaging/pkg/solace/message"
 	"solace.dev/go/messaging/pkg/solace/resource"
 	"solace.dev/go/trace/propagation"
-	"solace.dev/go/trace/test/helpers"
+	"solace.dev/go/trace/propagation/test/helpers"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -176,6 +176,174 @@ var _ = Describe("Remote Message Tests", func() {
 		messagingService, err = builder.Build()
 		Expect(err).ToNot(HaveOccurred())
 		messageBuilder = messagingService.MessageBuilder()
+	})
+
+	Describe("Received InboundMessage Carrier setters and getters", func() {
+		var publisher solace.DirectMessagePublisher
+		var receiver solace.DirectMessageReceiver
+		var inboundMessageChannel chan message.InboundMessage
+
+		BeforeEach(func() {
+			var err error
+			err = messagingService.Connect()
+			Expect(err).ToNot(HaveOccurred())
+
+			publisher, err = messagingService.CreateDirectMessagePublisherBuilder().Build()
+			Expect(err).ToNot(HaveOccurred())
+			receiver, err = messagingService.CreateDirectMessageReceiverBuilder().WithSubscriptions(resource.TopicSubscriptionOf(topic)).Build()
+			Expect(err).ToNot(HaveOccurred())
+
+			err = publisher.Start()
+			Expect(err).ToNot(HaveOccurred())
+
+			inboundMessageChannel = make(chan message.InboundMessage)
+			receiver.ReceiveAsync(func(inboundMessage message.InboundMessage) {
+				inboundMessageChannel <- inboundMessage
+			})
+
+			err = receiver.Start()
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		AfterEach(func() {
+			var err error
+			err = publisher.Terminate(10 * time.Second)
+			Expect(err).ToNot(HaveOccurred())
+			err = receiver.Terminate(10 * time.Second)
+			Expect(err).ToNot(HaveOccurred())
+
+			err = messagingService.Disconnect()
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		It("does not panic when calling Set(TraceParent) on carrier inbound message", func() {
+			message, err := messageBuilder.Build()
+			Expect(err).ToNot(HaveOccurred())
+
+			publisher.Publish(message, resource.TopicOf(topic))
+
+			select {
+			case msg := <-inboundMessageChannel:
+				var carrier = propagation.NewInboundMessageCarrier(msg)
+				traceParent1 := "00-79f90916c9a3dad1eb4b328e00469e45-3b364712c4e1f17f-01" // creation context
+				carrier.Set(propagation.TracingPropertyName.TraceParent, traceParent1)
+				Expect(carrier.Get(propagation.TracingPropertyName.TraceParent)).ToNot(BeEmpty())
+
+				msgWithTracingSupport := msg.(InboundMessageWithTracingSupport)
+				traceID, spanID, sampled, traceState, ok := msgWithTracingSupport.GetCreationTraceContext()
+				Expect(ok).To(BeTrue())
+				Expect(traceID).ToNot(BeEmpty()) // not be empty
+				Expect(spanID).ToNot(BeEmpty())  // not be empty
+				Expect(sampled).To(BeTrue())
+				Expect(traceState).To(Equal(""))
+			case <-time.After(1 * time.Second):
+				Fail("timed out waiting for message to be delivered")
+			}
+		})
+
+		It("does not panic when calling Set(TraceState) on carrier inbound message", func() {
+			message, err := messageBuilder.Build()
+			Expect(err).ToNot(HaveOccurred())
+
+			publisher.Publish(message, resource.TopicOf(topic))
+
+			select {
+			case msg := <-inboundMessageChannel:
+				var carrier = propagation.NewInboundMessageCarrier(msg)
+				traceParent1 := "00-79f90916c9a3dad1eb4b328e00469e45-3b364712c4e1f17f-01" // creation context
+				carrier.Set(propagation.TracingPropertyName.TraceParent, traceParent1)
+
+				traceState1 := "trace1=value1;trace2=value2;trace322=ewrHB554CGF" // creation trace state
+				carrier.Set(propagation.TracingPropertyName.TraceState, traceState1)
+				Expect(carrier.Get(propagation.TracingPropertyName.TraceState)).ToNot(BeEmpty())
+
+				msgWithTracingSupport := msg.(InboundMessageWithTracingSupport)
+				traceID, spanID, sampled, traceState, ok := msgWithTracingSupport.GetCreationTraceContext()
+				Expect(ok).To(BeTrue())
+				Expect(traceID).ToNot(BeEmpty()) // not be empty
+				Expect(spanID).ToNot(BeEmpty())  // not be empty
+				Expect(sampled).To(BeTrue())
+				Expect(traceState).To(Equal(traceState1))
+			case <-time.After(1 * time.Second):
+				Fail("timed out waiting for message to be delivered")
+			}
+		})
+
+		It("does not panic when calling Set(Baggage) on carrier inbound message", func() {
+			message, err := messageBuilder.Build()
+			Expect(err).ToNot(HaveOccurred())
+
+			publisher.Publish(message, resource.TopicOf(topic))
+
+			select {
+			case msg := <-inboundMessageChannel:
+				var carrier = propagation.NewInboundMessageCarrier(msg)
+				baggageStr := "newbaggage=Oseme,example=yammer,foo=bar"
+				carrier.Set(propagation.TracingPropertyName.Baggage, baggageStr)
+				Expect(carrier.Get(propagation.TracingPropertyName.Baggage)).ToNot(BeEmpty())
+
+				msgWithTracingSupport := msg.(InboundMessageWithTracingSupport)
+				baggage, ok := msgWithTracingSupport.GetBaggage()
+				Expect(ok).To(BeTrue())
+				Expect(baggage).To(Equal(baggageStr))
+			case <-time.After(1 * time.Second):
+				Fail("timed out waiting for message to be delivered")
+			}
+		})
+
+		It("does not panic when calling Get(TraceParent) on carrier inbound message", func() {
+			message, err := messageBuilder.Build()
+			Expect(err).ToNot(HaveOccurred())
+
+			publisher.Publish(message, resource.TopicOf(topic))
+
+			select {
+			case msg := <-inboundMessageChannel:
+				var carrier = propagation.NewInboundMessageCarrier(msg)
+				Expect(func() { carrier.Get(propagation.TracingPropertyName.TraceParent) }).ToNot(Panic())
+			case <-time.After(1 * time.Second):
+				Fail("timed out waiting for message to be delivered")
+			}
+		})
+
+		It("does not panic when calling Get(TraceState) on carrier inbound message", func() {
+			message, err := messageBuilder.Build()
+			Expect(err).ToNot(HaveOccurred())
+
+			publisher.Publish(message, resource.TopicOf(topic))
+
+			select {
+			case msg := <-inboundMessageChannel:
+				var carrier = propagation.NewInboundMessageCarrier(msg)
+				Expect(func() { carrier.Get(propagation.TracingPropertyName.TraceState) }).ToNot(Panic())
+
+				msgWithTracingSupport := msg.(InboundMessageWithTracingSupport)
+				_, _, _, traceState, _ := msgWithTracingSupport.GetCreationTraceContext()
+				Expect(traceState).To(BeEmpty())
+			case <-time.After(1 * time.Second):
+				Fail("timed out waiting for message to be delivered")
+			}
+		})
+
+		It("does not panic when calling Get(Baggage) on carrier inbound message", func() {
+			message, err := messageBuilder.Build()
+			Expect(err).ToNot(HaveOccurred())
+
+			publisher.Publish(message, resource.TopicOf(topic))
+
+			select {
+			case msg := <-inboundMessageChannel:
+				var carrier = propagation.NewInboundMessageCarrier(msg)
+				Expect(func() { carrier.Get(propagation.TracingPropertyName.Baggage) }).ToNot(Panic())
+
+				msgWithTracingSupport := msg.(InboundMessageWithTracingSupport)
+				baggage, _ := msgWithTracingSupport.GetBaggage()
+				Expect(baggage).To(Equal(""))
+			case <-time.After(1 * time.Second):
+				Fail("timed out waiting for message to be delivered")
+			}
+		})
+
 	})
 
 	Describe("Published and received message with Distributed Tracing support", func() {

@@ -23,7 +23,7 @@ import (
 	"testing"
 
 	"solace.dev/go/messaging/pkg/solace/logging"
-	"solace.dev/go/trace/test/testcontext"
+	"solace.dev/go/trace/propagation/test/testcontext"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

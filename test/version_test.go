@@ -17,28 +17,16 @@
 package test
 
 import (
-	// "solace.dev/go/trace/propagation"
-	"solace.dev/go/messaging"
-	"solace.dev/go/messaging/pkg/solace"
-
-	"solace.dev/go/trace/test/helpers"
+	"solace.dev/go/trace/propagation"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("API Version Info", func() {
-	var builder solace.MessagingServiceBuilder
-	BeforeEach(func() {
-		builder = messaging.NewMessagingServiceBuilder().FromConfigurationProvider(helpers.DefaultConfiguration())
-	})
 	It("can retrieve the version from the API", func() {
-		messagingService := helpers.BuildMessagingService(builder)
-		client := helpers.ConnectMessagingService(messagingService)
-		apiInfo := messagingService.Info()
-		Expect(apiInfo).ToNot(BeNil())
-		Expect(apiInfo.GetAPIVersion()).ToNot(BeEmpty())
-		Expect(client.SoftwareVersion).To(Equal(apiInfo.GetAPIVersion()))
-		helpers.DisconnectMessagingService(messagingService)
+		apiVersionInfo := propagation.Version()
+		Expect(apiVersionInfo).ToNot(BeNil())
+		Expect(apiVersionInfo).ToNot(BeEmpty())
 	})
 })
