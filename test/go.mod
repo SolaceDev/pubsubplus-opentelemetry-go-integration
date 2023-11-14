@@ -52,9 +52,9 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace solace.dev/go/messaging v1.4.0 => ../../pubsubplus-go-client
+replace solace.dev/go/messaging v1.4.0 => github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231108215346-af7c3a1c5d36
 
-replace solace.dev/go/trace/propagation v1.0.0 => ../../pubsubplus-opentelemetry-go-integration
+replace solace.dev/go/trace/propagation v1.0.0 => ../
 
 replace solace.dev/go/trace/propagation/test/sempclient/action v0.0.0 => ./sempclient/action
 

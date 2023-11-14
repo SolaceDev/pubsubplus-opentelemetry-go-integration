@@ -615,12 +615,12 @@ var _ = Describe("Remote Message Tests", func() {
 			// set creation context on message
 			creationCtxTraceID, _ := hex.DecodeString("79f90916c9a3dad1eb4b328e00469e45")
 			creationCtxSpanID, _ := hex.DecodeString("3b364712c4e1f17f")
-			creationCtxTraceState := "trace1=Sample1"
+			creationCtxTraceState := "trace1=example1"
 
 			// set transport context on message
 			transportCtxTraceID, _ := hex.DecodeString("55d30916c9a3dad1eb4b328e00469e45")
 			transportCtxSpanID, _ := hex.DecodeString("a7164712c4e1f17f")
-			transportCtxTraceState := "trace2=Sample2"
+			transportCtxTraceState := "trace2=example2"
 
 			var creationCtxTraceID16, transportCtxTraceID16 [16]byte
 			var creationCtxSpanID8, transportCtxSpanID8 [8]byte
