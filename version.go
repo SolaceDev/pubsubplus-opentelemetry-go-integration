@@ -16,9 +16,11 @@
 
 package propagation // import "solace.dev/go/trace/propagation"
 
+const version = "1.0.0"
+
 // Version is the current release version of the Solace PubSub+ OpenTelemetry Integration API.
 func Version() string {
-	return "1.0.0"
+	return version
 	// This string should updated by a pre-release script during release
 }
 
