@@ -20,7 +20,7 @@ properties([
 ])
 currentBuild.rawBuild.getParent().setQuietPeriod(0)
 
-library 'jenkins-pipeline-library@CRE-1293'
+library 'jenkins-pipeline-library@main'
 
 /*
   Go Version examples:
