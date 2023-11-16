@@ -97,8 +97,8 @@ github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdko
 github.com/Shopify/logrus-bugsnag v0.0.0-20171204204709-577dee27f20d/go.mod h1:HI8ITrYtUY+O+ZhtlqUnD8+KwNPOyugEhfP9fdUIaEQ=
 github.com/Shopify/toxiproxy/v2 v2.3.0 h1:62YkpiP4bzdhKMH+6uC5E95y608k3zDwdzuBMsnn3uQ=
 github.com/Shopify/toxiproxy/v2 v2.3.0/go.mod h1:KvQTtB6RjCJY4zqNJn7C7JDFgsG5uoHYDirfUfpIm0c=
-github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231108215346-af7c3a1c5d36 h1:enJNblhQjh1ZQXHI2Rbk5wZU3WwPJP2351IrP9Qn8DU=
-github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231108215346-af7c3a1c5d36/go.mod h1:QKqAKqxKX5v0G9PEuRpe9wBNbEuj/ncbrkqsNArT7L0=
+github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231116162208-cc081e657883 h1:U+5256Uxi/Oz9+nkhflGR36SZ0PRtz3TSariE1jP0GE=
+github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231116162208-cc081e657883/go.mod h1:QKqAKqxKX5v0G9PEuRpe9wBNbEuj/ncbrkqsNArT7L0=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
