@@ -258,7 +258,7 @@ var _ = Describe("Remote Message Tests", func() {
 				Expect(carrier.Get(propagation.TracingPropertyName.TraceState)).ToNot(BeEmpty())
 
 				msgWithTracingSupport := msg.(InboundMessageWithTracingSupport)
-				traceID, spanID, sampled, traceState, ok := msgWithTracingSupport.GetCreationTraceContext()
+				traceID, spanID, sampled, _, ok := msgWithTracingSupport.GetCreationTraceContext()
 				Expect(ok).To(BeTrue())
 				Expect(traceID).ToNot(BeEmpty()) // not be empty
 				Expect(spanID).ToNot(BeEmpty())  // not be empty
