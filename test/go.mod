@@ -52,7 +52,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace solace.dev/go/messaging v1.4.0 => github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231116162208-cc081e657883
+replace solace.dev/go/messaging v1.4.0 => github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231122203614-56e89688cb34
 
 replace solace.dev/go/trace/propagation v1.0.0 => ../
 
