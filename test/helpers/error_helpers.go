@@ -23,9 +23,9 @@ import (
 
 	"solace.dev/go/messaging/pkg/solace"
 	"solace.dev/go/messaging/pkg/solace/subcode"
-	"solace.dev/go/trace/propagation/test/sempclient/action"
-	"solace.dev/go/trace/propagation/test/sempclient/config"
-	"solace.dev/go/trace/propagation/test/sempclient/monitor"
+	"solace.dev/go/messaging/trace/propagation/test/sempclient/action"
+	"solace.dev/go/messaging/trace/propagation/test/sempclient/config"
+	"solace.dev/go/messaging/trace/propagation/test/sempclient/monitor"
 
 	//lint:ignore ST1001 dot import is fine for tests
 	. "github.com/onsi/gomega"

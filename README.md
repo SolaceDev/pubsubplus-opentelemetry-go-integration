@@ -1,13 +1,13 @@
-# Solace: solace.dev/go/trace/propagation
+# Solace: solace.dev/go/messaging/trace/propagation
 [![Test](https://github.com/SolaceProducts/pubsubplus-opentelemetry-go-integration/actions/workflows/test.yml/badge.svg)](https://github.com/SolaceProducts/pubsubplus-opentelemetry-go-integration/actions/workflows/test.yml)
-[![PkgGoDev](https://pkg.go.dev/badge/solace.dev/go/trace/propagation.svg)](https://pkg.go.dev/solace.dev/go/trace/propagation)
-[![Go Report Card](https://goreportcard.com/badge/solace.dev/go/trace/propagation)](https://goreportcard.com/report/solace.dev/go/trace/propagation)
+[![PkgGoDev](https://pkg.go.dev/badge/solace.dev/go/messaging/trace/propagation.svg)](https://pkg.go.dev/solace.dev/go/messaging/trace/propagation)
+[![Go Report Card](https://goreportcard.com/badge/solace.dev/go/messaging/trace/propagation)](https://goreportcard.com/report/solace.dev/go/messaging/trace/propagation)
 
 The Solace PubSub+ OpenTelemetry Integration API for Go is used to handle injection and extraction of tracing information for carrier objects (Solace message) for a Solace PubSub+ Event Broker.
 
 ## Getting Started
 
-To get started using the Solace PubSub+ OpenTelemetry Integration API for Go, simply include it as a required module in your Go project by running `go get solace.dev/go/trace/propagation`. The Solace PubSub+ OpenTelemetry Integration API for Go requires Go version 1.17+.
+To get started using the Solace PubSub+ OpenTelemetry Integration API for Go, simply include it as a required module in your Go project by running `go get solace.dev/go/messaging/trace/propagation`. The Solace PubSub+ OpenTelemetry Integration API for Go requires Go version 1.17+.
 
 ### Usage
 

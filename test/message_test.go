@@ -25,8 +25,8 @@ import (
 	"solace.dev/go/messaging/pkg/solace/config"
 	"solace.dev/go/messaging/pkg/solace/message"
 	"solace.dev/go/messaging/pkg/solace/resource"
-	"solace.dev/go/trace/propagation"
-	"solace.dev/go/trace/propagation/test/helpers"
+	"solace.dev/go/messaging/trace/propagation"
+	"solace.dev/go/messaging/trace/propagation/test/helpers"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

@@ -17,7 +17,7 @@
 package test
 
 import (
-	"solace.dev/go/trace/propagation"
+	"solace.dev/go/messaging/trace/propagation"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

@@ -20,7 +20,7 @@ package impl
 
 import (
 	"solace.dev/go/messaging/pkg/solace/message"
-	"solace.dev/go/trace/propagation/internal"
+	"solace.dev/go/messaging/trace/propagation/internal"
 )
 
 // OutboundMessageWithTracingSupport represents a message received by a consumer.
@@ -179,8 +179,9 @@ func (carrier *OutboundMessageCarrier) Set(key, val string) {
 				if traceID, spanID, sampled, ok := internal.GetTraceContextPropertiesFromTraceParent(val); ok {
 					// Set the Transport context if we find a creation context
 					if creationTraceID, _, _, _, _ok := messageWithDT.GetCreationTraceContext(); _ok && creationTraceID != [16]byte{} {
-						// else set them as the Transport context
-						messageWithDT.SetTransportTraceContext(*traceID, *spanID, sampled, nil)
+						// else set them as the Transport context and clear the trace state of the transport context, if available
+						emptyStr := ""
+						messageWithDT.SetTransportTraceContext(*traceID, *spanID, sampled, &emptyStr)
 						internal.Log("Set[TraceParent]: Creation context was found, Injecting as transport context")
 					} else {
 						// else set them as the Creation context

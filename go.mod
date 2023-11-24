@@ -1,4 +1,4 @@
-module solace.dev/go/trace/propagation
+module solace.dev/go/messaging/trace/propagation
 
 go 1.17
 

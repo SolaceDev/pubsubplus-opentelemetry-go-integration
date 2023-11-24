@@ -19,8 +19,8 @@ package helpers
 import (
 	"time"
 
-	"solace.dev/go/trace/propagation/test/sempclient/config"
-	"solace.dev/go/trace/propagation/test/testcontext"
+	"solace.dev/go/messaging/trace/propagation/test/sempclient/config"
+	"solace.dev/go/messaging/trace/propagation/test/testcontext"
 )
 
 // Our generated SEMPv2 client has **bool as the datatype for booleans to be able to differentiate between "missing" and "false"

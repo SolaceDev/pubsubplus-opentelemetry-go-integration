@@ -14,9 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package propagation // import "solace.dev/go/trace/propagation"
+package propagation // import "solace.dev/go/messaging/trace/propagation"
 
-import "solace.dev/go/trace/propagation/internal"
+import "solace.dev/go/messaging/trace/propagation/internal"
 
 // TracingPropertyName - the tracing property names
 var TracingPropertyName = internal.NewTracingPropertyNames()

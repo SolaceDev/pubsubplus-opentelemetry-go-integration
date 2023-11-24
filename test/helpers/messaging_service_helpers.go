@@ -25,8 +25,8 @@ import (
 
 	"solace.dev/go/messaging/pkg/solace"
 	"solace.dev/go/messaging/pkg/solace/config"
-	"solace.dev/go/trace/propagation/test/sempclient/monitor"
-	"solace.dev/go/trace/propagation/test/testcontext"
+	"solace.dev/go/messaging/trace/propagation/test/sempclient/monitor"
+	"solace.dev/go/messaging/trace/propagation/test/testcontext"
 
 	//lint:ignore ST1001 dot import is fine for tests
 	. "github.com/onsi/ginkgo/v2"
