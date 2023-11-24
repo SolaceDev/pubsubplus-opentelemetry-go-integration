@@ -20,6 +20,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"strings"
+
+	"solace.dev/go/messaging/trace/propagation/internal/impl/logging"
 )
 
 const Version string = "00"
@@ -41,7 +43,7 @@ const SpanIDLength int = 16
 func GetTraceParentFromTraceContextProperties(traceID [16]byte, spanID [8]byte, sampled bool) string {
 	// if the traceID and spanID is not available for this context
 	if traceID == [16]byte{} || spanID == [8]byte{} {
-		Log("[formatContextAsString]: Failed to retrieve trace parent as string from Solace message with tracing support")
+		logging.Default.Info("[formatContextAsString]: Failed to retrieve trace parent as string from Solace message with tracing support")
 		return ""
 	}
 
@@ -65,16 +67,15 @@ func GetTraceParentFromTraceContextProperties(traceID [16]byte, spanID [8]byte, 
 }
 
 // GetTraceContextPropertiesFromTraceParent deserializes a trace parent string into its tracing context object properties.
-//
 // @param traceParent the trace parent string to deserialize
 // returns - the tracing context object properties
 func GetTraceContextPropertiesFromTraceParent(traceParent string) (traceID *[16]byte, spanID *[8]byte, sampled bool, ok bool) {
-	// valid value "00-75e792db89dec2cf3b3333a2f71869e4-982f925c36fb8a1c-11"
+	// valid value "00-75e792db89dec2cf3b3333a2f71869e4-982f925c36fb8a1c-01"
 	traceParentParts := strings.Split(traceParent, TraceParentDelimiter)
 
 	if len(traceParentParts) == 4 && traceParentParts[0] == Version &&
 		len(traceParentParts[1]) == TraceIDLength && len(traceParentParts[2]) == SpanIDLength {
-		// var version string = traceParentParts[0]
+		// ignore the traceParentParts[0] which contains the version, we don't care about it
 		var traceIDHex = traceParentParts[1]
 		var spanIDHex = traceParentParts[2]
 		var isSampledFlag = traceParentParts[3]
@@ -98,7 +99,6 @@ func GetTraceContextPropertiesFromTraceParent(traceParent string) (traceID *[16]
 }
 
 // IsValidBaggageKey determines whether the given string is a valid entry key.
-//
 // @param key - the entry key to be validated.
 // returns boolean of whether the key is valid.
 func IsValidBaggageKey(key string) bool {
@@ -107,7 +107,6 @@ func IsValidBaggageKey(key string) bool {
 
 // IsValidBaggageValue determines whether the given string is a valid
 // baggage entry value.
-//
 // @param value - the entry value to be validated.
 // returns boolean of whether the value is valid.
 func IsValidBaggageValue(value string) bool {

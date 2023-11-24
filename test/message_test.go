@@ -26,6 +26,7 @@ import (
 	"solace.dev/go/messaging/pkg/solace/message"
 	"solace.dev/go/messaging/pkg/solace/resource"
 	"solace.dev/go/messaging/trace/propagation"
+	"solace.dev/go/messaging/trace/propagation/logging"
 	"solace.dev/go/messaging/trace/propagation/test/helpers"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -82,6 +83,9 @@ type OutboundMessageWithTracingSupport interface {
 
 var _ = Describe("Local MessageBuilder Tests", func() {
 	var messageBuilder solace.OutboundMessageBuilder
+
+	// set the log level to Debug
+	logging.SetLogLevel(logging.LogLevelDebug)
 
 	// We are intentionally doing this outside of the BeforeEach block in order to not allocate hundreds of messaging services
 	// as they are expensive to create and can cause issues with number of open files on some test systems
@@ -162,6 +166,9 @@ var _ = Describe("Remote Message Tests", func() {
 
 	var messagingService solace.MessagingService
 	var messageBuilder solace.OutboundMessageBuilder
+
+	// set the log level to Debug
+	logging.SetLogLevel(logging.LogLevelDebug)
 
 	BeforeEach(func() {
 		builder := messaging.NewMessagingServiceBuilder().
