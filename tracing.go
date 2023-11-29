@@ -18,18 +18,18 @@ package propagation // import "solace.dev/go/messaging/trace/propagation"
 
 import (
 	"solace.dev/go/messaging/pkg/solace/message"
+	"solace.dev/go/messaging/trace/propagation/carrier"
 	impl "solace.dev/go/messaging/trace/propagation/internal/impl"
-	"solace.dev/go/messaging/trace/propagation/propagation"
 )
 
-// NewInboundMessageCarrier returns an instance of propagation.InboundMessageCarrier that can be used
+// NewInboundMessageCarrier returns an instance of carrier.InboundMessageCarrier that can be used
 // with otel integration for extracting tracing information from a received Inbound message.
-func NewInboundMessageCarrier(carrier message.InboundMessage) propagation.InboundMessageCarrier {
+func NewInboundMessageCarrier(carrier message.InboundMessage) carrier.InboundMessageCarrier {
 	return impl.NewInboundMessageCarrier(carrier)
 }
 
-// NewOutboundMessageCarrier returns an instance of propagation.OutboundMessageCarrier that can be used
+// NewOutboundMessageCarrier returns an instance of carrier.OutboundMessageCarrier that can be used
 // with otel integration for injecting tracing information before publishing an Outbound message.
-func NewOutboundMessageCarrier(carrier message.OutboundMessage) propagation.OutboundMessageCarrier {
+func NewOutboundMessageCarrier(carrier message.OutboundMessage) carrier.OutboundMessageCarrier {
 	return impl.NewOutboundMessageCarrier(carrier)
 }
