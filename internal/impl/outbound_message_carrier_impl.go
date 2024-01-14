@@ -74,14 +74,14 @@ func GetOutboundMessageCarrierPointer(message *OutboundMessageCarrier) message.O
 }
 
 // Get returns the value associated with the passed key.
-func (carrier *OutboundMessageCarrier) Get(key string) string {
+func (carrier OutboundMessageCarrier) Get(key string) string {
 	// TODO: ***Note use appropriate otel decoding functions for to string conversion
 	// TODO: determine if transport or creation context to return, use GetCreationTraceContext() or GetTransportTraceContext() functions on the underlying message pointer
 	// TODO: use an internal MessageImpl data storage to retrieve otel data to propagator:
 	// 1. when key is 'traceparent' all parts of the traceparent from the underlying message pointer
 	// 2. when key is 'tracestate' all parts of the traceparent from the underlying message pointer
 	// 3. when key is 'baggage' GetBaggage() function on the underlying message pointer
-	// when key is non of above (log as it is not supported format) insert into the message as user property, key as is & value string as is.
+	// when key is non of above ignore (log as it is not supported format)
 
 	if key == "" {
 		return "" // invalid key argument passed in
@@ -157,19 +157,18 @@ func (carrier *OutboundMessageCarrier) Get(key string) string {
 }
 
 // Set stores the key-value pair.
-func (carrier *OutboundMessageCarrier) Set(key, val string) {
+func (carrier OutboundMessageCarrier) Set(key, val string) {
 	// TODO: ***Note use appropriate otel decoding functions for from string conversion to binary format
 	// TODO:  use an internal MessageImpl data storage to insert otel data from propagator:
 	// 1. when key is 'traceparent' decompose value and store all parts of the traceparent into the underlying message pointer, use method 'SetTraceContext'
 	// 2. when key is 'tracestate' all parts of the traceparent from the underlying message pointer (determine if transport or creation context to return)
-	// 3. when key is 'baggage' GetBaggage() function on the underlying message pointer
-	// when key is non of above ignore (log as it is not supported format)
+	// 3. when key is 'baggage' SetBaggage() function on the underlying message pointer
+	// when key is non of above (log as it is not supported format) insert into the message as user property, key as is & value string as is.
 
 	if key != "" {
 		if val != "" {
 			// cast the message to the extended interface that has message tracing support
-			message := carrier.messagePointer
-			messageWithDT := message.(OutboundMessageWithTracingSupport)
+			messageWithDT := carrier.messagePointer.(OutboundMessageWithTracingSupport)
 
 			// the tracing property names
 			TracingPropertyName := internal.NewTracingPropertyNames()
@@ -223,7 +222,7 @@ func (carrier *OutboundMessageCarrier) Set(key, val string) {
 					logging.Default.Warning("Baggage injection failed: Invalid Baggage value")
 				}
 			default:
-				// TODO to ignore or set into message as user properties in UserProperty Map
+				// TODO: Set into message as user properties in UserProperty Map
 				logging.Default.Warning("Ignoring any other OTEL third party tracing properties")
 			}
 
@@ -238,7 +237,7 @@ func (carrier *OutboundMessageCarrier) Set(key, val string) {
 }
 
 // Keys lists the keys stored in this carrier.
-func (carrier *OutboundMessageCarrier) Keys() []string {
+func (carrier OutboundMessageCarrier) Keys() []string {
 	// it can return 'traceparent', 'tracestate', 'baggage' when they are supported by the underlying message pointer
 	// the tracing property names
 	TracingPropertyName := internal.NewTracingPropertyNames()

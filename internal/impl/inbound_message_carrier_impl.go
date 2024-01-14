@@ -74,22 +74,21 @@ func GetInboundMessageCarrierPointer(message *InboundMessageCarrier) message.Inb
 }
 
 // Get returns the value associated with the passed key.
-func (carrier *InboundMessageCarrier) Get(key string) string {
+func (carrier InboundMessageCarrier) Get(key string) string {
 	// TODO: ***Note use appropriate otel decoding functions for to string conversion
 	// TODO: determine if transport or creation context to return, use GetCreationTraceContext() or GetTransportTraceContext() functions on the underlying message pointer
 	// TODO: use an internal MessageImpl data storage to retrieve otel data to propagator:
 	// 1. when key is 'traceparent' all parts of the traceparent from the underlying message pointer
 	// 2. when key is 'tracestate' all parts of the traceparent from the underlying message pointer
 	// 3. when key is 'baggage' GetBaggage() function on the underlying message pointer
-	// when key is non of above ignore (log as it is not supported format with warn level)
+	// when key is non of above (log as it is not supported format), try to get from message user property using given key as is, when found return value as is, otherwise return empty string.
 
 	if key == "" {
 		return "" // invalid key argument passed in
 	}
 
 	// cast the message to the extended interface that has message tracing support
-	message := carrier.messagePointer
-	messageWithDT := message.(InboundMessageWithTracingSupport)
+	messageWithDT := carrier.messagePointer.(InboundMessageWithTracingSupport)
 
 	// the tracing property names
 	TracingPropertyName := internal.NewTracingPropertyNames()
@@ -153,18 +152,25 @@ func (carrier *InboundMessageCarrier) Get(key string) string {
 		return "" // empty baggage
 	}
 
+	// try to get from message user property using given key as is, when found return value as is, otherwise return empty string.
+	if retrievedProperty, found := carrier.messagePointer.GetProperty(key); found {
+		logging.Default.Warning("key does not match supported OTEL tracing property name, returning from message's User Property Map")
+		return retrievedProperty.(string) // return the retrievd=ed property from the message
+	}
+
+	// return an empty string if we could not retrieve any of the tracing properties from the message
 	logging.Default.Warning("key does not match any known OTEL tracing property name, returning an empty string")
 	return ""
 }
 
 // Set stores the key-value pair.
-func (carrier *InboundMessageCarrier) Set(key, val string) {
+func (carrier InboundMessageCarrier) Set(key, val string) {
 	// TODO: ***Note use appropriate otel decoding functions for from string conversion to binary format
 	// TODO:  use an internal MessageImpl data storage to insert otel data from propagator:
 	// 1. when key is 'traceparent' decompose value and store all parts of the traceparent into the underlying message pointer, use method 'SetTraceContext'
 	// 2. when key is 'tracestate' all parts of the traceparent from the underlying message pointer (determine if transport or creation context to return)
-	// 3. when key is 'baggage' GetBaggage() function on the underlying message pointer
-	// when key is non of above (log as it is not supported format), try to get from message user property using given key as is, when found return value as is, otherwise return empty string.
+	// 3. when key is 'baggage' SetBaggage() function on the underlying message pointer
+	// when key is non of above ignore (log as it is not supported format with warn level)
 
 	if key != "" {
 		if val != "" {
@@ -224,7 +230,7 @@ func (carrier *InboundMessageCarrier) Set(key, val string) {
 					logging.Default.Warning("Baggage injection failed: Invalid Baggage value")
 				}
 			default:
-				// TODO to ignore or set into message as user properties in UserProperty Map
+				// when key is non of above ignore (log as it is not supported format with warn level)
 				logging.Default.Warning("Ignoring any other OTEL third party tracing properties")
 			}
 		} else {
@@ -239,7 +245,7 @@ func (carrier *InboundMessageCarrier) Set(key, val string) {
 }
 
 // Keys lists the keys stored in this carrier.
-func (carrier *InboundMessageCarrier) Keys() []string {
+func (carrier InboundMessageCarrier) Keys() []string {
 	// it can return 'traceparent', 'tracestate', 'baggage' when they are supported by the underlying message pointer
 	// the tracing property names
 	TracingPropertyName := internal.NewTracingPropertyNames()
