@@ -75,12 +75,9 @@ func GetInboundMessageCarrierPointer(message *InboundMessageCarrier) message.Inb
 
 // Get returns the value associated with the passed key.
 func (carrier InboundMessageCarrier) Get(key string) string {
-	// TODO: ***Note use appropriate otel decoding functions for to string conversion
-	// TODO: determine if transport or creation context to return, use GetCreationTraceContext() or GetTransportTraceContext() functions on the underlying message pointer
-	// TODO: use an internal MessageImpl data storage to retrieve otel data to propagator:
-	// 1. when key is 'traceparent' all parts of the traceparent from the underlying message pointer
-	// 2. when key is 'tracestate' all parts of the traceparent from the underlying message pointer
-	// 3. when key is 'baggage' GetBaggage() function on the underlying message pointer
+	// 1. when key is 'traceparent', retrieve all parts of the traceparent from the underlying message pointer
+	// 2. when key is 'tracestate', retrieve all parts of the tracestate from the underlying message pointer
+	// 3. when key is 'baggage', get baggage from the underlying message pointer
 	// when key is non of above (log as it is not supported format), try to get from message user property using given key as is, when found return value as is, otherwise return empty string.
 
 	if key == "" {
@@ -120,20 +117,20 @@ func (carrier InboundMessageCarrier) Get(key string) string {
 		_, _, _, creationTraceState, _ := messageWithDT.GetCreationTraceContext()
 
 		if transportTraceState == "" && creationTraceState == "" {
-			logging.Default.Debug("[getTraceStateAsString]: Transport and creation context not present")
+			logging.Default.Debug("[GetTraceStateAsString]: Transport and creation context not present")
 			return ""
 		}
 
 		var traceState = "" // to hold the trace state from the message
 		if transportTraceState != "" {
-			logging.Default.Info("[getTraceStateAsString]: Found trace state for transport context")
-			logging.Default.Debug("[getTraceStateAsString]: Transport context trace state: " + transportTraceState)
+			logging.Default.Info("[GetTraceStateAsString]: Found trace state for transport context")
+			logging.Default.Debug("[GetTraceStateAsString]: Transport context trace state: " + transportTraceState)
 			traceState = transportTraceState
 		}
 
 		if creationTraceState != "" {
-			logging.Default.Info("[getTraceStateAsString]: Found trace state for creation context")
-			logging.Default.Debug("[getTraceStateAsString]: Creation context trace state: " + creationTraceState)
+			logging.Default.Info("[GetTraceStateAsString]: Found trace state for creation context")
+			logging.Default.Debug("[GetTraceStateAsString]: Creation context trace state: " + creationTraceState)
 
 			if traceState != "" {
 				traceState = traceState + "," + creationTraceState
@@ -148,7 +145,7 @@ func (carrier InboundMessageCarrier) Get(key string) string {
 			logging.Default.Debug("Baggage string found for Solace message: " + baggage)
 			return baggage
 		}
-		logging.Default.Debug("[getTraceStateAsString]: Baggage not present on this Solace message")
+		logging.Default.Debug("[GetBaggageAsString]: Baggage not present on this Solace message")
 		return "" // empty baggage
 	}
 
@@ -165,82 +162,83 @@ func (carrier InboundMessageCarrier) Get(key string) string {
 
 // Set stores the key-value pair.
 func (carrier InboundMessageCarrier) Set(key, val string) {
-	// TODO: ***Note use appropriate otel decoding functions for from string conversion to binary format
-	// TODO:  use an internal MessageImpl data storage to insert otel data from propagator:
-	// 1. when key is 'traceparent' decompose value and store all parts of the traceparent into the underlying message pointer, use method 'SetTraceContext'
-	// 2. when key is 'tracestate' all parts of the traceparent from the underlying message pointer (determine if transport or creation context to return)
-	// 3. when key is 'baggage' SetBaggage() function on the underlying message pointer
+	// Use an internal MessageImpl data storage to insert otel data from propagator:
+	// 1. when key is 'traceparent' decompose value and store all parts of the traceparent into the underlying message pointer
+	// 2. when key is 'tracestate' store all parts of the tracestate from the underlying message pointer (determine if transport or creation context to set)
+	// 3. when key is 'baggage' set baggage on the underlying message pointer
 	// when key is non of above ignore (log as it is not supported format with warn level)
 
-	if key != "" {
-		if val != "" {
-			// cast the message to the extended interface that has message tracing support
-			message := carrier.messagePointer
-			messageWithDT := message.(InboundMessageWithTracingSupport)
-
-			// the tracing property names
-			TracingPropertyName := internal.NewTracingPropertyNames()
-
-			switch key {
-
-			case TracingPropertyName.TraceParent:
-				logging.Default.Info("Injecting trace parent into the Solace message")
-				// return the trasport context as the Trace Parent
-				if traceID, spanID, sampled, ok := internal.GetTraceContextPropertiesFromTraceParent(val); ok {
-					// Set the Transport context if we find a creation context
-					if creationTraceID, _, _, _, _ok := messageWithDT.GetCreationTraceContext(); _ok && creationTraceID != [16]byte{} {
-						// else set them as the Transport context and clear the trace state of the transport context, if available
-						emptyStr := ""
-						messageWithDT.SetTransportTraceContext(*traceID, *spanID, sampled, &emptyStr)
-						logging.Default.Info("Set[TraceParent]: Creation context was found, Injecting as transport context")
-					} else {
-						// else set them as the Creation context
-						messageWithDT.SetCreationTraceContext(*traceID, *spanID, sampled, nil)
-						logging.Default.Info("Set[TraceParent]: Injecting as creation context")
-					}
-				}
-
-			case TracingPropertyName.TraceState:
-				logging.Default.Info("Injecting trace state into the Solace message")
-				newTraceState := string(val) // new string since we are passing a reference into function
-				// inject traceState into creation context since it is not null
-				if traceID, spanID, sampled, traceState, _ok := messageWithDT.GetCreationTraceContext(); !_ok || traceState == "" {
-					// set it as the Creation context
-					logging.Default.Info("Set[TraceState]: Either creation context was not found or was found without trace state, Injecting into creation context")
-					messageWithDT.SetCreationTraceContext(traceID, spanID, sampled, &newTraceState)
-				} else {
-					// set it as the Transport context
-					if traceID, spanID, sampled, _, ok := messageWithDT.GetTransportTraceContext(); ok {
-						// use the tracing properties already in transport context as args
-						logging.Default.Info("Set[TraceState]: Trace state found in creation context, Injecting into transport context")
-						messageWithDT.SetTransportTraceContext(traceID, spanID, sampled, &newTraceState)
-					}
-				}
-
-			case TracingPropertyName.Baggage:
-				logging.Default.Info("'Injecting baggage information into the Solace message")
-				// check that baggage is valid before injection
-				if internal.IsValidBaggageValue(val) {
-					logging.Default.Debug("Injected Baggage string: " + val)
-					_error := messageWithDT.SetBaggage(val)
-					if _error != nil {
-						logging.Default.Error("Baggage injection failed: " + _error.Error())
-					}
-				} else {
-					logging.Default.Warning("Baggage injection failed: Invalid Baggage value")
-				}
-			default:
-				// when key is non of above ignore (log as it is not supported format with warn level)
-				logging.Default.Warning("Ignoring any other OTEL third party tracing properties")
-			}
-		} else {
-			// invalid val argument passed in
-			logging.Default.Warning("val cannot be null or an empty string")
-		}
-
-	} else {
+	if key == "" {
 		// invalid key argument passed in
 		logging.Default.Warning("key cannot be null or an empty string")
+		return // return from the function
+	}
+
+	if val == "" {
+		// invalid val argument passed in
+		logging.Default.Warning("val cannot be null or an empty string")
+		return // return from the function
+	}
+
+	// cast the message to the extended interface that has message tracing support
+	messageWithDT := carrier.messagePointer.(InboundMessageWithTracingSupport)
+
+	// the tracing property names
+	TracingPropertyName := internal.NewTracingPropertyNames()
+
+	switch key {
+
+	case TracingPropertyName.TraceParent:
+		logging.Default.Info("Injecting trace parent into the Solace message")
+		traceID, spanID, sampled, ok := internal.GetTraceContextPropertiesFromTraceParent(val)
+		if !ok {
+			return
+		}
+		// return the trasport context as the Trace Parent
+		// Set the Transport context if we find a creation context
+		if creationTraceID, _, _, _, _ok := messageWithDT.GetCreationTraceContext(); _ok && creationTraceID != [16]byte{} {
+			// else set them as the Transport context and clear the trace state of the transport context, if available
+			emptyStr := ""
+			messageWithDT.SetTransportTraceContext(*traceID, *spanID, sampled, &emptyStr)
+			logging.Default.Info("Set[TraceParent]: Creation context was found, Injecting as transport context")
+		} else {
+			// else set them as the Creation context
+			messageWithDT.SetCreationTraceContext(*traceID, *spanID, sampled, nil)
+			logging.Default.Info("Set[TraceParent]: Injecting as creation context")
+		}
+
+	case TracingPropertyName.TraceState:
+		logging.Default.Info("Injecting trace state into the Solace message")
+		newTraceState := string(val) // new string since we are passing a reference into function
+		// inject traceState into creation context since it is not null
+		if traceID, spanID, sampled, traceState, _ok := messageWithDT.GetCreationTraceContext(); !_ok || traceState == "" {
+			// set it as the Creation context
+			logging.Default.Info("Set[TraceState]: Either creation context was not found or was found without trace state, Injecting into creation context")
+			messageWithDT.SetCreationTraceContext(traceID, spanID, sampled, &newTraceState)
+		} else {
+			// set it as the Transport context
+			if traceID, spanID, sampled, _, ok := messageWithDT.GetTransportTraceContext(); ok {
+				// use the tracing properties already in transport context as args
+				logging.Default.Info("Set[TraceState]: Trace state found in creation context, Injecting into transport context")
+				messageWithDT.SetTransportTraceContext(traceID, spanID, sampled, &newTraceState)
+			}
+		}
+
+	case TracingPropertyName.Baggage:
+		logging.Default.Info("'Injecting baggage information into the Solace message")
+		// check that baggage is valid before injection
+		if internal.IsValidBaggageValue(val) {
+			logging.Default.Debug("Injected Baggage string: " + val)
+			_error := messageWithDT.SetBaggage(val)
+			if _error != nil {
+				logging.Default.Error("Baggage injection failed: " + _error.Error())
+			}
+		} else {
+			logging.Default.Warning("Baggage injection failed: Invalid Baggage value")
+		}
+	default:
+		// when key is non of above ignore (log as it is not supported format with warn level)
+		logging.Default.Warning("Ignoring any other OTEL third party tracing properties")
 	}
 }
 
