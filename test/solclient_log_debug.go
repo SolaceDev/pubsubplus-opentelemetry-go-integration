@@ -27,5 +27,5 @@ import (
 func setLogLevel() {
 	// Setup logging before the test context
 	logging.SetLogLevel(logging.LogLevelDebug)
-	tracelogging.SetLogLevel(tracelogging.LogLevelInfo) // set up logging for this pubSub+ Opentelemtry integration component
+	tracelogging.SetLogLevel(tracelogging.LogLevelDebug) // set up logging for this pubSub+ Opentelemtry integration component
 }
