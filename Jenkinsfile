@@ -35,8 +35,8 @@ library 'jenkins-pipeline-library@main'
 */
 
 builder.goapi([
-  "buildCheckGoVer": 'auto-v1.17.x',
-  "validationGoVer": 'auto-v1.17.x',
+  "buildCheckGoVer": 'auto-v1.20.0',
+  "validationGoVer": 'auto-v1.20.0',
   "getTestPermutations": {
     List<List<String>> permutations = []
     for (platform in [builder.LINUX_ARM, builder.LINUX_X86_64, builder.LINUX_MUSL, builder.DARWIN_X86_64,  builder.DARWIN_ARM]) {
