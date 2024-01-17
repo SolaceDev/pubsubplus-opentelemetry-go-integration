@@ -1,6 +1,6 @@
 # Tests
 
-The integration tests are stored in this directory. These integration tests are driven by a test context. The test context is made up of a few parts: connection details used to populate a messaging service configuration and management tools to interact with external resources such as the broker, toxi proxi, auth servers, etc. Most of the testing is done using a local docker-compose based broker, however this is abstracted out via a test context. The test context allows multiple configurations to be used for various test scenarios, as well as provides access to optional features such as Toxi Proxi. Currently, two test contexts are used:
+The integration tests are stored in this directory. These integration tests are driven by a test context. The test context is made up of a few parts: connection details used to populate a messaging service configuration and management tools to interact with external resources such as the broker, toxi proxi, OTel collectors, etc. Most of the testing is done using a local docker-compose based broker, however this is abstracted out via a test context. The test context allows multiple configurations to be used for various test scenarios, as well as provides access to optional features such as Toxi Proxi. Currently, two test contexts are used:
 - docker-compose based test context using testcontainers to spin up a broker and an instance of toxi proxi
 - environment based test context that reads in various environment variables to configure access to a broker
 
@@ -34,12 +34,6 @@ Various environment variables can be used to configure the test context. If usin
 
 ### Toxi Proxi
 The broker is often accessed through [toxiproxi](https://github.com/Shopify/toxiproxy) to test various edge cases that rely on network saturation, latency, disconnects, etc. Toxiproxi, which is stood up in docker-compose based test contexts, can be controlled through the golang [client](https://github.com/Shopify/toxiproxy/tree/master/client).
-
-### Kerberos
-Kerberos tests can be run when using testcontainers by exporting the variable KRB_TEST_IMAGE with a valid Kerberos server image.
-
-### OAuth
-OAuth tests can be run when using testcontainers by exporting the variable OAUTH_TEST_IMAGE with a valid OAuth server image.
 
 ## Generated SEMPv2 client
 In addition to the above generated code, we generate a SEMPv2 client based on the SEMPv2 spec using the [OpenAPI generator](https://github.com/OpenAPITools/openapi-generator) that is used in tests in order to configure remote resources. To generate the SEMPv2 client, Docker must be installed. Navigate to `./test/sempclient` and run `go generate`. This will generate the config, action and monitor APIs. See `./test/sempclient/semp-client.go` for the various generate directives.

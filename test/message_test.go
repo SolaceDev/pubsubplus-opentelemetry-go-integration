@@ -265,12 +265,12 @@ var _ = Describe("Remote Message Tests", func() {
 				Expect(carrier.Get(propagation.TracingPropertyName.TraceState)).ToNot(BeEmpty())
 
 				msgWithTracingSupport := msg.(InboundMessageWithTracingSupport)
-				traceID, spanID, sampled, _, ok := msgWithTracingSupport.GetCreationTraceContext()
+				traceID, spanID, sampled, traceState, ok := msgWithTracingSupport.GetCreationTraceContext()
 				Expect(ok).To(BeTrue())
 				Expect(traceID).ToNot(BeEmpty()) // not be empty
 				Expect(spanID).ToNot(BeEmpty())  // not be empty
 				Expect(sampled).To(BeTrue())
-				// Expect(traceState).To(Equal(traceState1))
+				Expect(traceState).To(Equal(traceState1))
 			case <-time.After(1 * time.Second):
 				Fail("timed out waiting for message to be delivered")
 			}

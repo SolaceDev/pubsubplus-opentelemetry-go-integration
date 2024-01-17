@@ -20,18 +20,5 @@
         "broker_edition": "standard",
         "toxiproxy_hostname": "toxiproxy",
         "network_name": "solace_msg_net"
-    },
-    "kerberos": {
-        "hostname": "ats-kdc-server",
-        "domain": "ATS.SOLACE.COM",
-        "username": "localtest@LOCAL.ATS.SOLACE.COM",
-        "password": "localtest"
-    },
-    "oauth": {
-        "hostname": "solaceOAuth",
-        "endpoints": {
-            "jwks": "https://solaceOAuth:30000/",
-            "user_info": "https://solaceOAuth:30001/"
-        }
     }
 }

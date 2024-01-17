@@ -22,9 +22,11 @@ package test
 
 import (
 	"solace.dev/go/messaging/pkg/solace/logging"
+	tracelogging "solace.dev/go/messaging/trace/propagation/logging"
 )
 
 func setLogLevel() {
 	// Setup logging before the test context
 	logging.SetLogLevel(logging.LogLevelInfo)
+	tracelogging.SetLogLevel(tracelogging.LogLevelInfo) // set up logging for this pubSub+ Opentelemtry integration component
 }

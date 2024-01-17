@@ -31,8 +31,6 @@ type TestConfig struct {
 	SEMP           *SEMPConfig           `json:"semp,omitempty"`
 	ToxiProxy      *ToxiProxyConfig      `json:"toxiproxy,omitempty"`
 	TestContainers *TestContainersConfig `json:"testcontainers,omitempty"`
-	Kerberos       *KerberosConfig       `json:"kerberos,omitempty"`
-	OAuth          *OAuthConfig          `json:"oauth,omitempty"`
 }
 
 // TestContainersConfig common context specific config should be placed here
@@ -43,28 +41,6 @@ type TestContainersConfig struct {
 	BrokerRepo        string `json:"broker_repo,omitempty" env:"PUBSUB_REPO_BASE"`
 	BrokerEdition     string `json:"broker_edition,omitempty" env:"PUBSUB_EDITION"`
 	NetworkName       string `json:"network_name,omitempty" env:"PUBSUB_NETWORK_NAME"`
-}
-
-// OAuthConfig represents OAuth's config
-type OAuthConfig struct {
-	Hostname  string               `json:"hostname,omitempty" env:"PUBSUB_OAUTHSERVER_HOSTNAME"`
-	Endpoints *OAuthEndpointConfig `json:"endpoints,omitempty"`
-	Image     string               `env:"OAUTH_TEST_IMAGE"`
-}
-
-// OAuthEndpointConfig
-type OAuthEndpointConfig struct {
-	JwksEndpoint     string `json:"jwks,omitempty" env:"PUBSUB_OAUTHSERVER_JWKS_ENDPOINT"`
-	UserInfoEndpoint string `json:"user_info,omitempty" env:"PUBSUB_OAUTHSERVER_USERINFO_ENDPOINT"`
-}
-
-// KerberosConfig represents Kerberos's config
-type KerberosConfig struct {
-	Image    string `json:"image" env:"KRB_TEST_IMAGE"`
-	Hostname string `json:"hostname" env:"PUBSUB_KDC_HOSTNAME"`
-	Domain   string `json:"domain" env:"PUBSUB_DOMAIN"`
-	Username string `json:"username" env:"KUSER"`
-	Password string `json:"password" env:"KPASSWORD"`
 }
 
 // ToEnvironment dumps the config to a map of environment variables

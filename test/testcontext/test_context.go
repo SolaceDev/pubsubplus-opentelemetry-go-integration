@@ -65,16 +65,6 @@ func Toxi() ToxiProxy {
 	return instance.ToxiProxy()
 }
 
-// Kerberos returns a boolean indicating if kerberos is enabled
-func Kerberos() bool {
-	return instance.Kerberos()
-}
-
-// OAuth returns the OAuth config
-func OAuth() *OAuthConfig {
-	return instance.OAuth()
-}
-
 // function to wait for semp serivces
 func WaitForSEMPReachable() error {
 	return instance.WaitForSEMPReachable()
@@ -90,25 +80,20 @@ type testContext interface {
 	Teardown() error
 	// Messaging returns the connection details for connections to the backing broker for messaging
 	Messaging() *MessagingConfig
-	// Kerberos returns a boolean indicating if kerberos is enabled
-	Kerberos() bool
 	// SEMPv2 returns thre SEMPv2 client entrypoint if available, or nil if SEMPv2 is unsupported (should never happen)
 	SEMPv2() SEMPv2
 	// ToxiProxy returns a toxiproxy client if available, or nil if ToxiProxy is not available.
 	// ToxiProxy will not be available in certain test contexts and should always be checked for presence before executing.
 	// For example, when targeting an environment based broker such as an appliance, no toxi proxi will be available.
 	ToxiProxy() ToxiProxy
-	// OAuth returns the OAuth config
-	OAuth() *OAuthConfig
 	// waits for semp service to be reachable
 	WaitForSEMPReachable() error
 }
 
 type testContextCommon struct {
-	config          *TestConfig
-	semp            *sempV2Impl
-	toxi            *toxiProxyImpl
-	kerberosEnabled bool
+	config *TestConfig
+	semp   *sempV2Impl
+	toxi   *toxiProxyImpl
 }
 
 // GetConnectionDetails impl
@@ -128,13 +113,6 @@ func (context *testContextCommon) ToxiProxy() ToxiProxy {
 		return nil
 	}
 	return context.toxi
-}
-func (context *testContextCommon) OAuth() *OAuthConfig {
-	return context.config.OAuth
-}
-
-func (context *testContextCommon) Kerberos() bool {
-	return context.kerberosEnabled
 }
 
 // loads the configs based on the given path
