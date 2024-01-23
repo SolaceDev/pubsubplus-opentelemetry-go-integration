@@ -19,7 +19,7 @@ require (
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
 	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
 	google.golang.org/genproto v0.0.0-20220304144024-325a89244dc8 // indirect
-	solace.dev/go/messaging v1.4.0
+	solace.dev/go/messaging v1.5.0
 	solace.dev/go/messaging/trace/propagation v1.0.0
 	solace.dev/go/messaging/trace/propagation/test/sempclient/action v0.0.0
 	solace.dev/go/messaging/trace/propagation/test/sempclient/config v0.0.0
@@ -51,8 +51,6 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace solace.dev/go/messaging v1.4.0 => github.com/SolaceDev/pubsubplus-go-client v0.0.0-20231122203614-56e89688cb34
 
 replace solace.dev/go/messaging/trace/propagation v1.0.0 => ../
 
