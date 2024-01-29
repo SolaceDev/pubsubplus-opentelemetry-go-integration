@@ -21,8 +21,8 @@
 package test
 
 import (
+	tracelogging "solace.dev/go/messaging-trace/opentelemetry/logging"
 	"solace.dev/go/messaging/pkg/solace/logging"
-	tracelogging "solace.dev/go/messaging/trace/propagation/logging"
 )
 
 func setLogLevel() {

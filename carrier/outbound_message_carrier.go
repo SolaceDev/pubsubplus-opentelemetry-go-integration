@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package carrier // import "solace.dev/go/messaging/trace/propagation/carrier"
+package carrier // import "solace.dev/go/messaging-trace/opentelemetry/carrier"
 
 // OutboundMessageCarrier is a type of MessageCarrier for inbound messages.
 type OutboundMessageCarrier interface {

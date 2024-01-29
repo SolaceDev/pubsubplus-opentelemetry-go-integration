@@ -19,8 +19,8 @@
 package impl
 
 import (
+	"solace.dev/go/messaging-trace/opentelemetry/internal/impl/logging"
 	"solace.dev/go/messaging/pkg/solace/message"
-	"solace.dev/go/messaging/trace/propagation/internal/impl/logging"
 )
 
 // OutboundMessageCarrier injects and extracts traces from a message.OutboundMessage at 'solace.dev/go/messaging/pkg/solace/message',

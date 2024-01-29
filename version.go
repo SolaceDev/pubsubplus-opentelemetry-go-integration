@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package propagation // import "solace.dev/go/messaging/trace/propagation"
+package opentelemetry // import "solace.dev/go/messaging-trace/opentelemetry"
 
 const version = "1.0.0"
 

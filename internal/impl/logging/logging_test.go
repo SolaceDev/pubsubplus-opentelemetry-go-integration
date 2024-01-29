@@ -26,7 +26,7 @@ import (
 	"strings"
 	"testing"
 
-	"solace.dev/go/messaging/trace/propagation/internal/impl/logging"
+	"solace.dev/go/messaging-trace/opentelemetry/internal/impl/logging"
 )
 
 var logLevels []logging.LogLevel = []logging.LogLevel{

@@ -1,4 +1,4 @@
-module solace.dev/go/messaging/trace/propagation/test/sempclient/monitor
+module solace.dev/go/messaging-trace/opentelemetry/test/sempclient/monitor
 
 go 1.13
 

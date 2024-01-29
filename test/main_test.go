@@ -22,8 +22,8 @@ import (
 	"sync"
 	"testing"
 
+	"solace.dev/go/messaging-trace/opentelemetry/test/testcontext"
 	"solace.dev/go/messaging/pkg/solace/logging"
-	"solace.dev/go/messaging/trace/propagation/test/testcontext"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

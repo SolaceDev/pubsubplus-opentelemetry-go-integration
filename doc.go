@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package propagation contains the functions used to handle injection
+// Package opentelemetry contains the functions used to handle injection
 // and extraction of tracing information for carrier objects (Solace message)
 // for a Solace PubSub+ Event Broker.
-package propagation
+package opentelemetry

@@ -30,8 +30,9 @@ The Solace PubSub+ OpenTelemetry Integration API for Go is used to handle inject
 
 The following are the directories that are part of the repository:
 - `./`: contains the API's main entrypoints such as tracing.
-- `propagation`: contains the API's interfaces, constants and basic data structures
+- `carrier`: contains the API's carrier interfaces
 - `internal`: contains the implementation for the PubSub+ OpenTelemetry Integration API for Go
+- `logging`: contains the API's logging interfaces, constants and basic data structures
 - `test`: contains integration tests for the PubSub+ OpenTelemetry Integration API for Go
 
 ### Prerequisites
