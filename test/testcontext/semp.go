@@ -22,9 +22,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"solace.dev/go/messaging/trace/propagation/test/sempclient/action"
-	"solace.dev/go/messaging/trace/propagation/test/sempclient/config"
-	"solace.dev/go/messaging/trace/propagation/test/sempclient/monitor"
+	"solace.dev/go/messaging-trace/opentelemetry/test/sempclient/action"
+	"solace.dev/go/messaging-trace/opentelemetry/test/sempclient/config"
+	"solace.dev/go/messaging-trace/opentelemetry/test/sempclient/monitor"
 )
 
 // SEMPConfig structure

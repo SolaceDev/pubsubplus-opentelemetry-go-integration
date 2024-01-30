@@ -1,4 +1,4 @@
-module solace.dev/go/messaging/trace/propagation
+module solace.dev/go/messaging-trace/opentelemetry
 
 go 1.20
 

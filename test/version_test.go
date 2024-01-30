@@ -17,7 +17,7 @@
 package test
 
 import (
-	"solace.dev/go/messaging/trace/propagation"
+	sol_propagation "solace.dev/go/messaging-trace/opentelemetry"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -25,7 +25,7 @@ import (
 
 var _ = Describe("API Version Info", func() {
 	It("can retrieve the version from the API", func() {
-		apiVersionInfo := propagation.Version()
+		apiVersionInfo := sol_propagation.Version()
 		Expect(apiVersionInfo).ToNot(BeNil())
 		Expect(apiVersionInfo).ToNot(BeEmpty())
 	})

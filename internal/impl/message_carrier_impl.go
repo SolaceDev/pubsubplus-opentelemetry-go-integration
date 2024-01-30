@@ -21,9 +21,9 @@ package impl
 import (
 	"strings"
 
+	"solace.dev/go/messaging-trace/opentelemetry/internal"
+	"solace.dev/go/messaging-trace/opentelemetry/internal/impl/logging"
 	"solace.dev/go/messaging/pkg/solace/message"
-	"solace.dev/go/messaging/trace/propagation/internal"
-	"solace.dev/go/messaging/trace/propagation/internal/impl/logging"
 )
 
 // MessageWithTracingSupport represents a message received by a consumer.

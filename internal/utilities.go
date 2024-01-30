@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"strings"
 
-	"solace.dev/go/messaging/trace/propagation/internal/impl/logging"
+	"solace.dev/go/messaging-trace/opentelemetry/internal/impl/logging"
 )
 
 const Version string = "00"

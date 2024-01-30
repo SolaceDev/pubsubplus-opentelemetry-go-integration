@@ -1,13 +1,13 @@
-# Solace: solace.dev/go/messaging/trace/propagation
+# Solace: solace.dev/go/messaging-trace/opentelemetry
 [![Test](https://github.com/SolaceProducts/pubsubplus-opentelemetry-go-integration/actions/workflows/test.yml/badge.svg)](https://github.com/SolaceProducts/pubsubplus-opentelemetry-go-integration/actions/workflows/test.yml)
-[![PkgGoDev](https://pkg.go.dev/badge/solace.dev/go/messaging/trace/propagation.svg)](https://pkg.go.dev/solace.dev/go/messaging/trace/propagation)
-[![Go Report Card](https://goreportcard.com/badge/solace.dev/go/messaging/trace/propagation)](https://goreportcard.com/report/solace.dev/go/messaging/trace/propagation)
+[![PkgGoDev](https://pkg.go.dev/badge/solace.dev/go/messaging-trace/opentelemetry.svg)](https://pkg.go.dev/solace.dev/go/messaging-trace/opentelemetry)
+[![Go Report Card](https://goreportcard.com/badge/solace.dev/go/messaging-trace/opentelemetry)](https://goreportcard.com/report/solace.dev/go/messaging-trace/opentelemetry)
 
 The Solace PubSub+ OpenTelemetry Integration API for Go is used to handle injection and extraction of tracing information for carrier objects (Solace message) for a Solace PubSub+ Event Broker.
 
 ## Getting Started
 
-To get started using the Solace PubSub+ OpenTelemetry Integration API for Go, simply include it as a required module in your Go project by running `go get solace.dev/go/messaging/trace/propagation`. The Solace PubSub+ OpenTelemetry Integration API for Go requires Go version 1.20+ (based on the minimum compatible version for opentelemtry-Go [https://github.com/open-telemetry/opentelemetry-go/blob/main/README.md](https://github.com/open-telemetry/opentelemetry-go/blob/main/README.md#compatibility)).
+To get started using the Solace PubSub+ OpenTelemetry Integration API for Go, simply include it as a required module in your Go project by running `go get solace.dev/go/messaging-trace/opentelemetry`. The Solace PubSub+ OpenTelemetry Integration API for Go requires Go version 1.20+ (based on the minimum compatible version for opentelemtry-Go [https://github.com/open-telemetry/opentelemetry-go/blob/main/README.md](https://github.com/open-telemetry/opentelemetry-go/blob/main/README.md#compatibility)).
 
 ### Usage
 

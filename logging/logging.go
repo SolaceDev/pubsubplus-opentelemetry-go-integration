@@ -15,12 +15,12 @@
 // limitations under the License.
 
 // Package logging allows for configuration of this package's logging levels.
-package logging // import "solace.dev/go/messaging/trace/propagation/logging"
+package logging // import "solace.dev/go/messaging-trace/opentelemetry/logging"
 
 import (
 	"io"
 
-	"solace.dev/go/messaging/trace/propagation/internal/impl/logging"
+	"solace.dev/go/messaging-trace/opentelemetry/internal/impl/logging"
 )
 
 // LogLevel is used to configure the logging-level of the API. The different levels can

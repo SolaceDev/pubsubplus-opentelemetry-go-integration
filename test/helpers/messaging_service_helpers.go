@@ -23,10 +23,10 @@ import (
 	"net/url"
 	"time"
 
+	"solace.dev/go/messaging-trace/opentelemetry/test/sempclient/monitor"
+	"solace.dev/go/messaging-trace/opentelemetry/test/testcontext"
 	"solace.dev/go/messaging/pkg/solace"
 	"solace.dev/go/messaging/pkg/solace/config"
-	"solace.dev/go/messaging/trace/propagation/test/sempclient/monitor"
-	"solace.dev/go/messaging/trace/propagation/test/testcontext"
 
 	//lint:ignore ST1001 dot import is fine for tests
 	. "github.com/onsi/ginkgo/v2"

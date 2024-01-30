@@ -14,12 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package propagation // import "solace.dev/go/messaging/trace/propagation"
+package opentelemetry // import "solace.dev/go/messaging-trace/opentelemetry"
 
 import (
+	"solace.dev/go/messaging-trace/opentelemetry/carrier"
+	impl "solace.dev/go/messaging-trace/opentelemetry/internal/impl"
 	"solace.dev/go/messaging/pkg/solace/message"
-	"solace.dev/go/messaging/trace/propagation/carrier"
-	impl "solace.dev/go/messaging/trace/propagation/internal/impl"
 )
 
 // NewInboundMessageCarrier returns an instance of carrier.InboundMessageCarrier that can be used
