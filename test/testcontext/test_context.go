@@ -174,7 +174,7 @@ func (context *testContextCommon) waitForVPNState(state string) error {
 		}
 		select {
 		case <-timeoutChannel:
-			return fmt.Errorf("timed out waiting for vpn status", context.config.Messaging.VPN)
+			return fmt.Errorf("timed out waiting for vpn status %s", context.config.Messaging.VPN)
 		case <-time.After(pollInterval):
 			continue
 		}
