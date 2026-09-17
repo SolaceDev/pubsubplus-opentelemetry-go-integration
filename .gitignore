@@ -24,6 +24,9 @@ go.work
 
 .vscode
 
+# Local AI assistant tooling (settings, and git worktrees created under .claude/worktrees/)
+.claude/
+
 # Removing the commented out includes
 # lib/*/bin*
 # lib/*/lib*
