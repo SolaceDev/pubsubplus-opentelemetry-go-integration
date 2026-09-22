@@ -24,6 +24,9 @@ go.work
 
 .vscode
 
+# Local credentials (e.g. Jenkins API tokens used by tooling)
+.env
+
 # Local AI assistant tooling (settings, and git worktrees created under .claude/worktrees/)
 .claude/
 
