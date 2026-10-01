@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir reports
           go install github.com/onsi/ginkgo/v2/ginkgo@v2.23.4
-          ginkgo --junit-report=./reports/report.xml -coverprofile ./reports/coverage.out -coverpkg solace.dev/go/messaging-trace/opentelemetry/internal/...,solace.dev/go/messaging-trace/opentelemetry/... -tags enable_debug_logging
+          ginkgo --output-dir ./reports/ --junit-report=report.xml -coverprofile coverage.out -coverpkg solace.dev/go/messaging-trace/opentelemetry/internal/...,solace.dev/go/messaging-trace/opentelemetry/... -tags enable_debug_logging
         working-directory: ./test
 
       - name: Uploads artifacts
