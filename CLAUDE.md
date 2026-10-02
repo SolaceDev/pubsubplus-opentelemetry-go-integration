@@ -4,9 +4,9 @@ Guidance for Claude Code / AI assistants working in this repository. Keep it con
 
 ## What this is
 
-The Solace PubSub+ OpenTelemetry Integration API for Go — handles injection and extraction of tracing context on carrier objects (Solace messages). Go module path: `solace.dev/go/messaging-trace/opentelemetry`.
+The Solace OpenTelemetry Integration API for Go — handles injection and extraction of tracing context on carrier objects (Solace messages). Go module path: `solace.dev/go/messaging-trace/opentelemetry`.
 
-It has a hard dependency on the [Solace PubSub+ Messaging API for Go](https://docs.solace.com/API/Messaging-APIs/Go-API/go-home.htm) (a Cgo wrapper over the Solace C API), which constrains the supported operating systems — see the [README](README.md) "OS Support".
+It has a hard dependency on the [Solace Messaging API for Go](https://docs.solace.com/API/Messaging-APIs/Go-API/go-home.htm) (a Cgo wrapper over the Solace C API), which constrains the supported operating systems — see the [README](README.md) "OS Support".
 
 - **Go version:** 1.20+ (per `go.mod` and the README).
 - **User-facing usage, install, OS support:** [README.md](README.md).
