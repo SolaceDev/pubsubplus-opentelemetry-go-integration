@@ -38,7 +38,7 @@ The following are the directories that are part of the repository:
 ### Prerequisites
 
 There are a handful of prerequisites for developing the Solace PubSub+ OpenTelemetry Integration API for Go:
-- Golang version 1.17+
+- Golang version 1.20+
 - A golang enabled code editor, preferably with format on save
     - https://github.com/fatih/vim-go
     - https://code.visualstudio.com/docs/languages/go
