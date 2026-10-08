@@ -38,6 +38,7 @@ builder.goapi([
   "buildCheckGoVer": 'auto-v1.20.0',
   "validationGoVer": 'auto-v1.20.0',
   "staticCheckPkg": 'honnef.co/go/tools/cmd/staticcheck@v0.4.6',
+  "generateLicenseReport": true,
   "getTestPermutations": {
     List<List<String>> permutations = []
     for (platform in [builder.LINUX_ARM, builder.LINUX_X86_64, builder.LINUX_MUSL, builder.DARWIN_X86_64,  builder.DARWIN_ARM]) {
